@@ -135,7 +135,8 @@ x[10]
 
 
 ~~~
-Error: object 'x' not found
+Error:
+! object 'x' not found
 ~~~
 {: .error}
 
