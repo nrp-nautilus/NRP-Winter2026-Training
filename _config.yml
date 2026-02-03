@@ -10,7 +10,7 @@
 carpentry: "cp"
 
 # Overall title for pages.
-title: "Lesson Title"
+title: "NRP-Winter2026-Training"
 
 # Life cycle stage of the lesson
 # See this page for more details: https://cdh.carpentries.org/the-lesson-life-cycle.html
@@ -98,3 +98,8 @@ exclude:
 
 # Turn on built-in syntax highlighting.
 highlighter: rouge
+
+#episode_order:
+#  - 01-design
+#  - 02-tooling
+#  - the-portal
