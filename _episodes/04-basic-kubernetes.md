@@ -4,6 +4,9 @@ questions:
 hidden: True
 
 ---
+## Requirements
+This section will contain some hands-on activities that will require that you have completed the [Setup]({{ page.root }}/setup.html) page.
+
 
 ## Docker and Kubernetes?
 Docker is a platform for building, packaging, and running applications in containers.
@@ -20,7 +23,7 @@ Docker Registry
 - A repository for storing and sharing Docker images.
 - Public example: Docker Hub (hub.docker.com)
 - Private registries are possible for internal use.
-- NRP’s GitLab: provides public/private registry based on repo’s settings.(If you have a local docker image, can push to gitlab, or build in gitlab)
+- NRP’s GitLab: provides public/private registry based on repo’s settings. (If you have a local docker image, can push to gitlab, or build in gitlab)
 
 
 
