@@ -7,7 +7,7 @@ permalink: index.html  # Is the only page that doesn't follow the pattern /:path
 {% include gh_variables.html %}
 
 ### Facilitators NRP-Winter2026-Training
-<img src="fig/Trainers.png" alt="" style="width:50%">
+<img src="fig/Trainers2.png" alt="" style="width:70%">
 
 > ## Important information (read before attending)
 >
