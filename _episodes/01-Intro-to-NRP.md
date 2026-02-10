@@ -98,5 +98,3 @@ The majority of NRP users interact with the cluster using the following three me
 - via NRP deployed **Jupyterhub**: Start a JupyterLab notebook server on the cluster for interactive analysis, prototyping, and teaching workflows.
 
 In order to access any of these services, users must first be added as a member of a namespace.
-
-<hr style="border:0; border-top:2px solid #8f8e8e; margin:2rem 0;">
