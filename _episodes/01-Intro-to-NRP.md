@@ -76,7 +76,20 @@ The primary option for support is via our [Matrix chat](https://element.nrp-naut
 - We announce news in **NRP News**
 - Element Client is free cross-platform, we host a web version at: [https://element.nrp-nautilus.io/](https://element.nrp-nautilus.io/)
 
+## Cluster Policies
+In order to access the cluser, every user must first accept the Acceptable Useage Polcy ([AUP](https://nrp.ai/NRP-AUP.pdf)).
+
+You can find our cluster usage policies in our docs:[https://nrp.ai/documentation/userdocs/start/policies/](https://nrp.ai/documentation/userdocs/start/policies/).
+
+>The most important thing to keep in mind is that **NRP is a shared resource**. Do not request more resources than you need and do not hold resources longer than what is necessary for your work. 
+{: .callout}
+
+![Cluster Policies]({{ page.root }}/fig/policies.png)
+
+
 ## Let's Get Started
+In the next sections, we will cover interacting with the NRP user portal, how to set-up and manage namespaces on the cluster and how to interact with the cluster.
+
 ![Top Uses]({{ page.root }}/fig/TopUse.png)
 
 The majority of NRP users interact with the cluster using the following three methods.
