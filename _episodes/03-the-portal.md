@@ -33,5 +33,10 @@ The following dashboard [https://nrp.ai/viz/resources/](https://nrp.ai/viz/resou
 > Pods will not land on tainted nodes unless granted special permissions.
 {: .callout}
 
-## 
-
+ 
+![Reservations]({{ page.root }}/fig/Reservations.png)
+![A100 Form]({{ page.root }}/fig/A100-form.png)
+![Node Form]({{ page.root }}/fig/node-form.png)
+![LLMToken]({{ page.root }}/fig/LLM-token.png)
+![Milvus]({{ page.root }}/fig/Milvus-creds.png)
+![S3]({{ page.root }}/fig/S3-token.png)
