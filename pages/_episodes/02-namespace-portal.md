@@ -1,9 +1,12 @@
 ---
 title: "Namespace and User Management"
+teaching: 40
+exercises: 10
 questions:
-- "How do I get started with NRP?"
-- "[Where to ask for help?](#where-should-i-ask-for-help)"
-- "Basic Kubernetes?"
+- "[How do I view my namespaces?](#the-namespace-portal)"
+- "[Where to add and promote users to a namespace?](#managing-users)"
+- "[How to create new groups and namespace](#subgroup-management)"
+- "[What are my responsibilities as admin?](#what-are-my-responsibilities-as-admin)"
 hidden: True
 
 ---

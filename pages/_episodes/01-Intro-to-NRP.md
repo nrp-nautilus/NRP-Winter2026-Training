@@ -1,9 +1,11 @@
 ---
 title: "Intro to NRP"
+teaching: 40
+exercises: 0
 questions:
-- "How do I get started with NRP?"
+- "[What is NRP?](#what-is-nrp)"
+- "[How do I get started with NRP?](#how-do-i-get-started)"
 - "[Where to ask for help?](#where-should-i-ask-for-help)"
-- "Basic Kubernetes?"
 hidden: True
 
 ---

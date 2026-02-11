@@ -1,6 +1,9 @@
 ---
 title: "Intro to Kubernetes and Docker"
+teaching: 30
+exercises: 30
 questions:
+- "[How to make a reservation](#reservations)"
 hidden: True
 
 ---

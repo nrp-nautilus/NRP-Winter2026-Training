@@ -1,9 +1,12 @@
 ---
 title: "The NRP User Portal"
+teaching: 30
+exercises: 0
 questions:
 - "[What is the NRP User Portal?](#the-nrp-user-portal)"
 - "[What Resources are available?](#resource-availability)"
-- "Basic Kubernetes?"
+- "[How to make a reservation](#reservations)"
+- "[Obtaining tokens (LLM, S3, Milvus)](#tokens)"
 hidden: True
 
 ---
