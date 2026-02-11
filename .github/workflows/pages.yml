@@ -31,6 +31,7 @@ jobs:
         uses: actions/configure-pages@v4
       
       - name: Prepare Jekyll source
+        shell: bash
         run: |
           echo "=== Starting Jekyll source preparation ==="
           pwd
