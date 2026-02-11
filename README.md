@@ -1,103 +1,76 @@
-[![Website Check Status](https://github.com/carpentries/lesson-example/workflows/Website/badge.svg)](https://github.com/carpentries/lesson-example/actions/workflows/website.yml?query=workflow%3AWebsite)
+# NRP Training - February 2026
 
-lesson-example
-==============
+Comprehensive training materials for the National Research Platform (NRP) Winter 2026 training sessions.
 
-[![Create a Slack Account with us][create_slack_svg]][slack_heroku_invite]
+## Training Materials
 
-This repository shows how to create a lesson using
-[The Carpentries lesson template][styles],
-and is itself an example of the use of that template.
-Please see <https://carpentries.github.io/lesson-example/>
-for a rendered version of this material,
-including detailed instructions on design, setup, and formatting.
+This repository contains the training notebooks and materials for both tracks:
 
-## Quick Instructions
+- **Beginner Track**: `Beginner_Track_Training.ipynb` and `Beginner_Track_Training.md`
+- **Intermediate Track**: `Intermediate_Track_Training.ipynb` and `Intermediate_Track_Training.md`
 
-1.  Do *not* fork this repository directly on GitHub.
-    Instead, please follow the instructions in [the setup instructions][setup]
-    to create a repository for your lesson by importing material
-    from [the styles repository][styles].
+## Training Schedule
 
-2.  Once you have created your repository,
-    run `bin/lesson_initialize.py` to create standard lesson-specific files.
-    You *must* edit several values in `_config.yml`
-    so that GitHub Pages will render your lesson correctly.
+### Set A
+- **Beginner Track**: Wednesday, February 11, 2026, 11:00 AM - 2:00 PM Pacific Time
+- **Intermediate Track**: Thursday, February 12, 2026, 11:00 AM - 2:00 PM Pacific Time
 
-3.  Please read [the episodes of this lesson][rendered] to format your material.
+### Set B
+- **Beginner Track**: Wednesday, February 18, 2026, 11:00 AM - 2:00 PM Pacific Time
+- **Intermediate Track**: Friday, February 20, 2026, 11:00 AM - 2:00 PM Pacific Time
 
-4.  Please keep the master copy of your lesson in your repository's `gh-pages` branch,
-    since that is what is
-    [automatically published as a website by GitHub][github-pages].
+## Beginner Track Topics
 
-5.  To preview material,
-    please run `make serve` from the command line
-    to launch Jekyll with the correct parameters,
-    or push to your repository's `gh-pages` branch
-    and let GitHub take care of the rendering.
+- **Introduction to the National Research Platform**  
+  Overview of NRP's mission, capabilities, how to gain access, and policy guidelines.
+- **The Portal: GUI Access to Resources**  
+  Navigate the NRP portal, manage namespaces/groups, and explore the integrated LiteLLM interface.
+- **Basic and Intermediate Docker and Kubernetes**  
+  Foundations of containers and orchestration: Pods, Deployments, PVCs, and S3 storage. Scripting with kubectl, exposing services, using taints/tolerations, node affinity, and Python APIs.
 
-6.  Run `make lesson-check` to check that your files follow our formatting rules.
+## Intermediate Track Topics
 
-7.  If you find an error or omission in this documentation,
-    please [file an issue in this repository][example-issues].
-    If you find an error or omission in the lesson template,
-    please [file an issue in the styles repository][styles-issues] instead.
+- **Using JupyterHub**  
+  Launch and use interactive development environments. Ideal for researchers, students, and educators.
+- **Using Coder**  
+  Launch and use interactive development environments with full code-server (VS Code) support.
+- **Deploying JupyterHub**  
+  Learn how to deploy and manage JupyterHub and Coder environments for groups or courses.
 
-## Layout
+## Prerequisites
 
-The layout of this repository is explained in [this site's episodes][rendered].
-In brief:
+**Institutional account access to NRP** is required. If you don't have access yet, please visit our getting started guide:
 
-1.  The source for pages that appear as top-level items in the navigation bar
-    are stored in the root directory,
-    including the home page (`index.md`),
-    the reference page (`reference.md`),
-    and the setup instructions (`setup.md`).
+📖 [Get Started with NRP Access](https://nrp.ai/documentation/userdocs/start/getting-started/)
 
-2.  Source files for lesson episodes are stored in `_episodes`;
-    `_episodes/01-xyz.md` generates `/01-xyz/index.html`,
-    which can be linked to using `/01-xyz/`.
+## Facilitators
 
-3.  If you are writing lessons in R Markdown,
-    source files go in `_episodes_rmd`.
-    You must run `make lesson-rmd` to turn these into Markdown in `_episodes`
-    and commit those Markdown files to the repository
-    (since GitHub won't run anything except Jekyll to format material).
-    You must also commit any figures generated from your lessons,
-    which are stored in the `fig` directory.
+- **Daniel Diaz** - Reachable on Matrix
+- **Mohammad Firas Sada** - Reachable on Matrix
+- **Dmitry Mishin** - Reachable on Matrix
 
-4.  Files that appear under the "extras" menu are stored in `_extras`.
+## Getting Help
 
-5.  Figures are stored in the `fig` directory,
-    data sets in `data`,
-    source code in `code`,
-    and miscellaneous files in `files`.
+- **Matrix**: Join NRP's Matrix for user support and real-time updates. Steps to join are available at [https://nrp.ai/contact/](https://nrp.ai/contact/)
+- **Email**: Alternatively, contact us at usersupport@nrp-nautilus.io
 
-## Getting Started
+## Important Information
 
-1.  Run `bin/lesson_initialize.py` to create files
-    that can't be stored in the template repository
-    (because they would cause repeated merge conflicts),
-    then edit `_config.yml` as described in
-    [the documentation][editing-config].
+📝 **Registration is Required**: You must register using the registration form before attending. While Zoom links are provided, registration helps us prepare resources, track attendance, and ensure you receive all necessary information.
 
-2.  Run `make lesson-check` at any time
-    to check that your lesson files follow our formatting rules.
-    If you come across formatting issues that the checker doesn't report,
-    please [file an issue in the styles repository][styles-issues].
+🔐 **NRP Access in Authentik is Required**: If you are not already registered in Authentik, you will NOT be able to fully follow along with the training. The hands-on exercises require active NRP access. Please set up your NRP access and Authentik account **before the training sessions begin** to participate in all activities.
 
-3.  For a list of helpful commands run `make` in this directory.
-    If you are looking for things to work on,
-    please see [the list of issues for this repository][issues].
+👤 **Namespace Admin Status for Intermediate Track**: If you are not a namespace admin, you will NOT be able to reproduce deploying multi-tenant JupyterHub environments within your namespace during the Intermediate Track session. The "Deploying JupyterHub" topic requires namespace admin privileges. You can still attend and learn, but hands-on practice will require admin access.
 
-[collections]: https://jekyllrb.com/docs/collections/
-[editing-config]: https://carpentries.github.io/lesson-example/03-organization/
-[example-issues]: https://github.com/carpentries/lesson-example/issues/
-[github-pages]: https://help.github.com/articles/creating-project-pages-manually/
-[issues]: https://github.com/carpentries/lesson-example/issues
-[rendered]: https://carpentries.github.io/lesson-example/
-[setup]: https://carpentries.github.io/lesson-example/setup.html
-[styles-issues]: https://github.com/carpentries/styles/issues/
-[styles]: https://github.com/carpentries/styles/
-[create_slack_svg]: https://img.shields.io/badge/Create_Slack_Account-The_Carpentries-071159.svg
-[slack_heroku_invite]: https://slack-invite.carpentries.org/
+🌍 **Eligibility Requirements**: NRP access is available to users from US academic institutions or users collaborating with US institutions on joint projects. If you are from a non-US institution or industry (non-academic), please contact us to discuss your eligibility before registering.
+
+## Resources
+
+- [NRP Portal](https://nrp.ai/)
+- [NRP Documentation](https://nrp.ai/documentation/)
+- [NRP Training Page](https://nrp.ai/training/)
+- [NRP Contact](https://nrp.ai/contact/)
+
+## License
+
+This training material is provided for educational purposes as part of the National Research Platform training program.
