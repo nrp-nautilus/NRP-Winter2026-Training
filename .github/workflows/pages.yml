@@ -32,25 +32,34 @@ jobs:
       
       - name: Prepare Jekyll source
         run: |
-          set -e  # Exit on error
           echo "=== Starting Jekyll source preparation ==="
+          pwd
+          ls -la | head -10
           
           # Copy pages content to root for Jekyll build
           # Jekyll expects the site to be in the root directory
           echo "Step 1: Copying all files from pages/ to root..."
           
           # Copy all visible files and directories
-          cp -rv pages/* . 2>&1 | head -20 || true
+          if [ -d "pages" ]; then
+            cp -rv pages/* . 2>&1 | head -30
+          else
+            echo "ERROR: pages directory does not exist!"
+            exit 1
+          fi
           
-          # Copy hidden files (like _config.yml)
+          # Copy hidden files (like _config.yml) - must be done before renaming pages
           echo "Step 2: Copying hidden files..."
+          if [ -f "pages/_config.yml" ]; then
+            cp -v pages/_config.yml . && echo "  ✓ _config.yml copied"
+          fi
+          # Copy any other hidden files
+          shopt -s dotglob nullglob
           for file in pages/.*; do
-            if [ -f "$file" ] || [ -d "$file" ]; then
-              filename=$(basename "$file")
-              if [ "$filename" != "." ] && [ "$filename" != ".." ]; then
-                echo "  Copying $filename..."
-                cp -rv "$file" "./$filename" 2>&1 || true
-              fi
+            filename=$(basename "$file")
+            if [ "$filename" != "." ] && [ "$filename" != ".." ] && [ "$filename" != "_config.yml" ]; then
+              echo "  Copying $filename..."
+              cp -rv "$file" "./$filename" 2>&1 || echo "  ⚠ Could not copy $filename"
             fi
           done
           
