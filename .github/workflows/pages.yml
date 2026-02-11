@@ -33,6 +33,7 @@ jobs:
       - name: Prepare Jekyll source
         shell: bash
         run: |
+          set -e  # Exit on error, but we'll handle errors manually
           echo "=== Starting Jekyll source preparation ==="
           pwd
           ls -la | head -10
@@ -42,38 +43,95 @@ jobs:
           echo "Step 1: Copying all files from pages/ to root..."
           
           # Copy all visible files and directories
-          if [ -d "pages" ]; then
-            cp -rv pages/* . 2>&1 | head -30
-          else
+          if [ ! -d "pages" ]; then
             echo "ERROR: pages directory does not exist!"
             exit 1
           fi
           
+          # Copy files with error handling
+          echo "Copying files from pages/ to root..."
+          if cp -rv pages/* . 2>&1; then
+            echo "✓ Files copied successfully"
+          else
+            echo "⚠ Some files may have failed to copy, continuing..."
+          fi
+          
+          # Count copied files for verification
+          echo "Verifying copy operation..."
+          copied_count=$(find . -maxdepth 1 -not -name '.' -not -name 'pages' -not -name '.git' -not -name '.github' | wc -l)
+          echo "Copied approximately $copied_count items to root"
+          
           # Copy hidden files (like _config.yml) - must be done before renaming pages
           echo "Step 2: Copying hidden files..."
           if [ -f "pages/_config.yml" ]; then
-            cp -v pages/_config.yml . && echo "  ✓ _config.yml copied"
+            if cp -v pages/_config.yml .; then
+              echo "  ✓ _config.yml copied"
+            else
+              echo "  ⚠ Failed to copy _config.yml, but it may already exist"
+            fi
           fi
-          # Copy any other hidden files
+          
+          # Copy any other hidden files (but skip . and ..)
           shopt -s dotglob nullglob
+          hidden_copied=0
           for file in pages/.*; do
             filename=$(basename "$file")
             if [ "$filename" != "." ] && [ "$filename" != ".." ] && [ "$filename" != "_config.yml" ]; then
-              echo "  Copying $filename..."
-              cp -rv "$file" "./$filename" 2>&1 || echo "  ⚠ Could not copy $filename"
+              if [ -e "$file" ]; then
+                echo "  Copying $filename..."
+                if cp -rv "$file" "./$filename" 2>&1; then
+                  hidden_copied=$((hidden_copied + 1))
+                else
+                  echo "  ⚠ Could not copy $filename (may already exist or be a directory)"
+                fi
+              fi
             fi
           done
+          echo "  Copied $hidden_copied hidden files"
           
-          # Explicitly ensure critical directories are copied
-          echo "Step 3: Verifying critical directories..."
-          [ -d "pages/_includes" ] && cp -rv pages/_includes . && echo "  ✓ _includes copied" || echo "  ✗ _includes not found"
-          [ -d "pages/_layouts" ] && cp -rv pages/_layouts . && echo "  ✓ _layouts copied" || echo "  ✗ _layouts not found"
-          [ -d "pages/_episodes" ] && cp -rv pages/_episodes . && echo "  ✓ _episodes copied" || echo "  ✗ _episodes not found"
-          [ -d "pages/_extras" ] && cp -rv pages/_extras . && echo "  ✓ _extras copied" || echo "  ✗ _extras not found"
-          [ -d "pages/assets" ] && cp -rv pages/assets . && echo "  ✓ assets copied" || echo "  ✗ assets not found"
+          # Step 3: Verify critical directories were copied (they should already be copied from Step 1)
+          echo "Step 3: Verifying critical directories exist in root..."
+          if [ -d "_includes" ]; then
+            echo "  ✓ _includes directory exists"
+            include_count=$(find _includes -type f | wc -l)
+            echo "    Contains $include_count files"
+          else
+            echo "  ✗ ERROR: _includes directory NOT found"
+            exit 1
+          fi
+          
+          if [ -d "_layouts" ]; then
+            echo "  ✓ _layouts directory exists"
+          else
+            echo "  ✗ ERROR: _layouts directory NOT found"
+            exit 1
+          fi
+          
+          if [ -d "_episodes" ]; then
+            echo "  ✓ _episodes directory exists"
+          else
+            echo "  ⚠ _episodes directory not found (may be optional)"
+          fi
+          
+          if [ -d "_extras" ]; then
+            echo "  ✓ _extras directory exists"
+          else
+            echo "  ⚠ _extras directory not found (may be optional)"
+          fi
+          
+          if [ -d "assets" ]; then
+            echo "  ✓ assets directory exists"
+          else
+            echo "  ⚠ assets directory not found (may be optional)"
+          fi
           
           # Ensure _config.yml is in root
-          [ -f "pages/_config.yml" ] && cp -v pages/_config.yml . && echo "  ✓ _config.yml copied" || echo "  ✗ _config.yml not found"
+          if [ -f "_config.yml" ]; then
+            echo "  ✓ _config.yml exists"
+          else
+            echo "  ✗ ERROR: _config.yml NOT found"
+            exit 1
+          fi
           
           # Verify critical files exist
           echo "Step 4: Verifying copied files..."
