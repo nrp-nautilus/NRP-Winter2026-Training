@@ -60,7 +60,21 @@ jobs:
             cp pages/_config.yml .
           fi
           # Verify critical files exist
-          ls -la _includes/syllabus.html || echo "ERROR: syllabus.html not found"
+          echo "Verifying copied files..."
+          ls -la _includes/ | head -10
+          [ -f "_includes/syllabus.html" ] && echo "✓ syllabus.html found" || echo "✗ ERROR: syllabus.html NOT found"
+          [ -f "_config.yml" ] && echo "✓ _config.yml found" || echo "✗ ERROR: _config.yml NOT found"
+          
+          # Rename pages directory to prevent Jekyll from processing it
+          # This ensures Jekyll only processes the copied files in root
+          if [ -d "pages" ]; then
+            mv pages pages_backup
+            echo "✓ Renamed pages directory to pages_backup to prevent Jekyll from processing it"
+          fi
+          
+          # Final check - root directory contents
+          echo "Final check - root directory contents:"
+          ls -la | grep -E "^d|^-" | head -15
       
       - name: Build with Jekyll
         uses: actions/jekyll-build-pages@v1
