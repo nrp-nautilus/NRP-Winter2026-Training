@@ -32,49 +32,67 @@ jobs:
       
       - name: Prepare Jekyll source
         run: |
+          set -e  # Exit on error
+          echo "=== Starting Jekyll source preparation ==="
+          
           # Copy pages content to root for Jekyll build
           # Jekyll expects the site to be in the root directory
-          # Copy all visible files and directories
-          cp -r pages/* .
-          # Copy hidden files and directories (starting with .)
-          shopt -s dotglob
-          cp -r pages/.* . 2>/dev/null || true
-          # Explicitly ensure critical directories are copied (in case they're hidden or missed)
-          if [ -d "pages/_includes" ]; then
-            cp -r pages/_includes .
-          fi
-          if [ -d "pages/_layouts" ]; then
-            cp -r pages/_layouts .
-          fi
-          if [ -d "pages/_episodes" ]; then
-            cp -r pages/_episodes .
-          fi
-          if [ -d "pages/_extras" ]; then
-            cp -r pages/_extras .
-          fi
-          if [ -d "pages/assets" ]; then
-            cp -r pages/assets .
-          fi
-          # Ensure _config.yml is in root
-          if [ -f "pages/_config.yml" ]; then
-            cp pages/_config.yml .
-          fi
-          # Verify critical files exist
-          echo "Verifying copied files..."
-          ls -la _includes/ | head -10
-          [ -f "_includes/syllabus.html" ] && echo "✓ syllabus.html found" || echo "✗ ERROR: syllabus.html NOT found"
-          [ -f "_config.yml" ] && echo "✓ _config.yml found" || echo "✗ ERROR: _config.yml NOT found"
+          echo "Step 1: Copying all files from pages/ to root..."
           
-          # Rename pages directory to prevent Jekyll from processing it
+          # Copy all visible files and directories
+          cp -rv pages/* . 2>&1 | head -20 || true
+          
+          # Copy hidden files (like _config.yml)
+          echo "Step 2: Copying hidden files..."
+          for file in pages/.*; do
+            if [ -f "$file" ] || [ -d "$file" ]; then
+              filename=$(basename "$file")
+              if [ "$filename" != "." ] && [ "$filename" != ".." ]; then
+                echo "  Copying $filename..."
+                cp -rv "$file" "./$filename" 2>&1 || true
+              fi
+            fi
+          done
+          
+          # Explicitly ensure critical directories are copied
+          echo "Step 3: Verifying critical directories..."
+          [ -d "pages/_includes" ] && cp -rv pages/_includes . && echo "  ✓ _includes copied" || echo "  ✗ _includes not found"
+          [ -d "pages/_layouts" ] && cp -rv pages/_layouts . && echo "  ✓ _layouts copied" || echo "  ✗ _layouts not found"
+          [ -d "pages/_episodes" ] && cp -rv pages/_episodes . && echo "  ✓ _episodes copied" || echo "  ✗ _episodes not found"
+          [ -d "pages/_extras" ] && cp -rv pages/_extras . && echo "  ✓ _extras copied" || echo "  ✗ _extras not found"
+          [ -d "pages/assets" ] && cp -rv pages/assets . && echo "  ✓ assets copied" || echo "  ✗ assets not found"
+          
+          # Ensure _config.yml is in root
+          [ -f "pages/_config.yml" ] && cp -v pages/_config.yml . && echo "  ✓ _config.yml copied" || echo "  ✗ _config.yml not found"
+          
+          # Verify critical files exist
+          echo "Step 4: Verifying copied files..."
+          if [ -d "_includes" ]; then
+            echo "  _includes directory exists with $(ls -1 _includes | wc -l) files"
+            ls -la _includes/ | head -10
+            [ -f "_includes/syllabus.html" ] && echo "  ✓ syllabus.html found" || echo "  ✗ ERROR: syllabus.html NOT found"
+          else
+            echo "  ✗ ERROR: _includes directory NOT found"
+          fi
+          [ -f "_config.yml" ] && echo "  ✓ _config.yml found" || echo "  ✗ ERROR: _config.yml NOT found"
+          
+          # CRITICAL: Rename pages directory BEFORE Jekyll runs
           # This ensures Jekyll only processes the copied files in root
+          echo "Step 5: Renaming pages directory to prevent Jekyll from processing it..."
           if [ -d "pages" ]; then
             mv pages pages_backup
-            echo "✓ Renamed pages directory to pages_backup to prevent Jekyll from processing it"
+            echo "  ✓ Renamed pages directory to pages_backup"
+            # Verify it's gone
+            [ ! -d "pages" ] && echo "  ✓ pages directory successfully removed" || echo "  ✗ ERROR: pages directory still exists"
+          else
+            echo "  ⚠ pages directory not found (may have been renamed already)"
           fi
           
-          # Final check - root directory contents
-          echo "Final check - root directory contents:"
+          # Final verification
+          echo "Step 6: Final verification - root directory contents:"
           ls -la | grep -E "^d|^-" | head -15
+          
+          echo "=== Jekyll source preparation complete ==="
       
       - name: Build with Jekyll
         uses: actions/jekyll-build-pages@v1
