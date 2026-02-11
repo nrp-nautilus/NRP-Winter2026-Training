@@ -34,9 +34,24 @@ jobs:
         run: |
           # Copy pages content to root for Jekyll build
           # Jekyll expects the site to be in the root directory
-          cp -r pages/* .
-          # Copy hidden files (like _config.yml) but skip . and ..
-          find pages -maxdepth 1 -name ".*" ! -name "." ! -name ".." -exec cp {} . \;
+          # Use rsync or cp with proper flags to copy everything including hidden files
+          rsync -av pages/ . || {
+            # Fallback if rsync is not available
+            cp -r pages/* .
+            cp -r pages/.[!.]* . 2>/dev/null || true
+          }
+          # Ensure _includes directory exists in root
+          if [ -d "pages/_includes" ]; then
+            cp -r pages/_includes .
+          fi
+          # Ensure _layouts directory exists in root
+          if [ -d "pages/_layouts" ]; then
+            cp -r pages/_layouts .
+          fi
+          # Ensure _config.yml is in root
+          if [ -f "pages/_config.yml" ]; then
+            cp pages/_config.yml .
+          fi
       
       - name: Build with Jekyll
         uses: actions/jekyll-build-pages@v1
