@@ -94,6 +94,38 @@ jobs:
           
           echo "=== Jekyll source preparation complete ==="
       
+      - name: Verify before Jekyll build
+        run: |
+          echo "=== Pre-Jekyll verification ==="
+          echo "Checking if pages directory still exists:"
+          if [ -d "pages" ]; then
+            echo "✗ ERROR: pages directory still exists! This will cause Jekyll to process it."
+            ls -la pages/ | head -5
+            exit 1
+          else
+            echo "✓ pages directory successfully removed"
+          fi
+          
+          echo "Checking if _includes exists:"
+          if [ -d "_includes" ]; then
+            echo "✓ _includes directory exists"
+            echo "Checking for syllabus.html:"
+            if [ -f "_includes/syllabus.html" ]; then
+              echo "✓ syllabus.html found"
+            else
+              echo "✗ ERROR: syllabus.html NOT found in _includes"
+              ls -la _includes/ | head -10
+              exit 1
+            fi
+          else
+            echo "✗ ERROR: _includes directory NOT found"
+            exit 1
+          fi
+          
+          echo "Checking root directory for Jekyll files:"
+          ls -la | grep -E "^d.*_(includes|layouts|episodes|extras)|^-.*\.md$|^-.*_config" | head -10
+          echo "=== Verification complete ==="
+      
       - name: Build with Jekyll
         uses: actions/jekyll-build-pages@v1
         with:
