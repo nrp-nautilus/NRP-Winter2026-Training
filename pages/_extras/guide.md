@@ -2,36 +2,105 @@
 title: "Instructor Notes"
 ---
 
-The instructor notes should provide additional discussion useful to instructors,
-but not appropriate for inclusion in the main lessons. The following structure
-provides a consistent way for instructors to both prepare for a workshop and
-quickly find necessary information during a workshop.
+## Training Overview
 
-Please remember not to overload on details, and to keep the comments here positive!
+This training is designed as two 3-hour sessions:
+- **Beginner Track** (3 hours): Introduction to NRP, portal usage, basic Kubernetes
+- **Intermediate Track** (3 hours): JupyterHub, Coder, deploying multi-tenant environments
 
-## Lesson motivation and learning objectives
+## Prerequisites for Learners
 
-These concepts should be highlighted in the main lesson material, but ideas for
-explaining these concepts further can be placed here.
+Before the training, learners should:
+1. Have NRP access via Authentik (institutional account)
+2. Be part of at least one namespace (check at [https://nrp.ai/namespaces/](https://nrp.ai/namespaces/))
+3. Have `kubectl` and `kubelogin` installed (instructions in Beginner Track notebook)
+4. Have downloaded the Kubernetes config file to `~/.kube/config`
 
-## Lesson design
+## Training Environment
 
-Most lessons contain more material than can be taught in a single workshop.
-Describe a general narrative (with time estimates) for teaching either a half day
-or full day with this lesson material. You may also choose to include multiple
-options for lesson design, or what material can be skipped while teaching.
-This section may also include recommendations for how this lesson fits into
-the overall workshop.
+### Live Training
+- Conducted via Zoom with integrated NRP JupyterHub access
+- Learners use `jupyterhub-west.nrp-nautilus.io` as their local environment
+- All commands can be copy-pasted from the notebooks
 
-## Technical tips and tricks
+### Self-Paced Learning
+- Learners can use their local environment with `kubectl`
+- Full setup instructions: [https://nrp.ai/documentation/userdocs/start/getting-started/](https://nrp.ai/documentation/userdocs/start/getting-started/)
 
-Provide information on setting up your environment for learners to view your
-live coding (increasing text size, changing text color, etc), as well as
-general recommendations for working with coding tools to best suit the
-learning environment.
+## Lesson Design
 
-## Common problems
+### Beginner Track (3 hours)
+1. **Introduction to NRP** (30 min)
+   - What is NRP, mission, capabilities
+   - Access requirements and policies
+   - Getting help resources
 
-This can include answers to common learner questions, as well as links to
-resources (blog posts, stack overflow answers, etc) that may solve problems that
-may occur during a workshop.
+2. **The Portal** (30 min)
+   - Navigating the portal
+   - Namespace and group management
+   - Resource availability
+
+3. **Basic Kubernetes** (2 hours)
+   - Installing and configuring kubectl
+   - Pods, Deployments, Services
+   - Persistent Volume Claims
+   - S3 storage access
+   - Node affinity and scheduling
+
+### Intermediate Track (3 hours)
+1. **Using JupyterHub** (45 min)
+   - Launching and using JupyterHub
+   - Image profiles and resource limits
+   - Managing notebooks
+
+2. **Using Coder** (45 min)
+   - Launching and using Coder workspaces
+   - Git integration
+   - Workspace management
+
+3. **Deploying JupyterHub** (90 min)
+   - Helm charts and deployment
+   - Configuration with Helm values
+   - Multi-tenant environments
+   - Troubleshooting
+
+## Technical Tips
+
+### For Instructors
+- Use screen sharing with large font sizes (18-20pt)
+- Have the notebooks open in JupyterHub for live coding
+- Test all commands before the session
+- Have backup solutions ready for common issues
+
+### Common Setup Issues
+- **kubectl not found**: Ensure PATH includes kubectl installation directory
+- **kubelogin errors**: Check token cache settings, browser command, listen port
+- **Authentication failures**: Verify config file is in `~/.kube/config`
+- **Namespace access denied**: Confirm user is part of namespace at [https://nrp.ai/namespaces/](https://nrp.ai/namespaces/)
+
+## Common Problems
+
+### Learners Can't Access Namespace
+- Verify they're part of a namespace: [https://nrp.ai/namespaces/](https://nrp.ai/namespaces/)
+- Students: Contact research supervisor to be added
+- Faculty/Researchers: Request admin status in Matrix
+
+### kubectl Authentication Issues
+- Ensure `kubelogin` plugin is installed
+- Check config file location: `~/.kube/config`
+- Try cross-platform fixes (token cache, browser command, listen port)
+
+### JupyterHub Not Starting
+- Check namespace resource quotas
+- Verify image profile is available
+- Check pod logs: `kubectl logs -n <namespace> <pod-name>`
+
+### Intermediate Track: Admin Requirements
+- Remind learners that deploying JupyterHub requires namespace admin status
+- Non-admins can still follow along but won't be able to deploy
+
+## Support Resources
+
+- **Matrix**: [https://nrp.ai/contact/](https://nrp.ai/contact/)
+- **Email**: usersupport@nrp-nautilus.io
+- **Documentation**: [https://nrp.ai/documentation/](https://nrp.ai/documentation/)
