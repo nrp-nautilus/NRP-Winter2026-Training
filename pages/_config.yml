@@ -102,6 +102,8 @@ exclude:
   - pages/
   - pages_backup/
   - .github/
+  - "**/pages/"
+  - "**/pages_backup/"
 
 
 # Turn on built-in syntax highlighting.
