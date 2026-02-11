@@ -30,10 +30,18 @@ jobs:
       - name: Setup Pages
         uses: actions/configure-pages@v4
       
+      - name: Prepare Jekyll source
+        run: |
+          # Copy pages content to root for Jekyll build
+          # Jekyll expects the site to be in the root directory
+          cp -r pages/* .
+          # Copy hidden files (like _config.yml) but skip . and ..
+          find pages -maxdepth 1 -name ".*" ! -name "." ! -name ".." -exec cp {} . \;
+      
       - name: Build with Jekyll
         uses: actions/jekyll-build-pages@v1
         with:
-          source: ./pages
+          source: .
           destination: ./_site
       
       - name: Upload artifact

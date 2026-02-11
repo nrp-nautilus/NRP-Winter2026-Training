@@ -94,12 +94,6 @@ exclude:
   - .vendor/
   - vendor/
   - .docker-vendor/
-  - Beginner_Track_Training.ipynb
-  - Beginner_Track_Training.md
-  - Intermediate_Track_Training.ipynb
-  - Intermediate_Track_Training.md
-  - README.md
-  - pages/
 
 
 # Turn on built-in syntax highlighting.
