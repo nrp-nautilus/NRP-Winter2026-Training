@@ -426,6 +426,9 @@ hub:
   service:
     type: ClusterIP
     annotations: {}
+    ports:
+      nodePort:
+    loadBalancerIP:
   deploymentStrategy:
     type: Recreate
   db:
@@ -444,9 +447,8 @@ hub:
       memory: 512Mi
   networkPolicy:
     enabled: false
-
 proxy:
-  secretToken: "REPLACE_WITH_GENERATED_TOKEN"
+  secretToken: 'secret_token'
   service:
     type: ClusterIP
   chp:
@@ -457,12 +459,37 @@ proxy:
       requests:
         cpu: "1"
         memory: 512Mi
-
 singleuser:
   uid: 0
   fsGid: 100
   extraEnv:
     GRANT_SUDO: "yes"
+  extraPodConfig:
+    securityContext:
+        fsGroupChangePolicy: "OnRootMismatch"
+        fsGroup: 100
+  extraNodeAffinity:
+    required:
+      - matchExpressions:
+        - 'key': 'topology.kubernetes.io/region'
+          'operator': 'In'
+          'values': ["us-west"]
+  cloudMetadata:
+    blockWithIptables: false
+  networkPolicy:
+    enabled: false
+  storage:
+    type: dynamic
+    extraLabels: {}
+    extraVolumes: []
+    extraVolumeMounts: []
+    capacity: 5Gi
+    homeMountPath: /home/jovyan
+    dynamic:
+      storageClass: rook-ceph-block
+      pvcNameTemplate: claim-{username}{servername}
+      volumeNameTemplate: volume-{username}{servername}
+      storageAccessModes: [ReadWriteOnce]
   image:
     name: quay.io/jupyter/scipy-notebook
     tag: 2024-04-22
@@ -473,33 +500,97 @@ singleuser:
   memory:
     limit: 10G
     guarantee: 10G
-  storage:
-    type: dynamic
-    capacity: 5Gi
-    dynamic:
-      storageClass: rook-ceph-block
-      pvcNameTemplate: claim-{username}{servername}
-      volumeNameTemplate: volume-{username}{servername}
-      storageAccessModes: [ReadWriteOnce]
+  extraResource:
+    limits: {}
+    guarantees: {}
+  cmd: null
+  defaultUrl: "/lab"
+  profileList:
+  - display_name: Scipy
+    kubespawner_override:
+      image_spec: quay.io/jupyter/scipy-notebook:2024-04-22
+    default: True
+  - display_name: R
+    kubespawner_override:
+      image_spec: quay.io/jupyter/r-notebook:2024-04-22
+  - display_name: Julia
+    kubespawner_override:
+      image_spec: quay.io/jupyter/julia-notebook:2024-04-22
+  - display_name: Tensorflow
+    kubespawner_override:
+      image_spec: quay.io/jupyter/tensorflow-notebook:cuda-2024-04-22
+  - display_name: Pytorch
+    kubespawner_override:
+      image_spec: quay.io/jupyter/pytorch-notebook:cuda12-2024-04-22
+  - display_name: Datascience (scipy, Julia, R)
+    kubespawner_override:
+      image_spec: quay.io/jupyter/datascience-notebook:2024-04-22
+  - display_name: Pyspark
+    kubespawner_override:
+      image_spec: quay.io/jupyter/pyspark-notebook:2024-04-22
+  - display_name: All Spark
+    kubespawner_override:
+      image_spec: quay.io/jupyter/all-spark-notebook:2024-04-22
+  - display_name: B-Data python scipy
+    kubespawner_override:
+      image_spec: glcr.b-data.ch/jupyterlab/cuda/python/scipy:3
+  - display_name: B-Data Julia
+    kubespawner_override:
+      image_spec: glcr.b-data.ch/jupyterlab/cuda/julia/base:1
+  - display_name: B-Data R
+    kubespawner_override:
+      image_spec: glcr.b-data.ch/jupyterlab/cuda/r/base:4
+  - display_name: B-Data R tidyverse
+    kubespawner_override:
+      image_spec: glcr.b-data.ch/jupyterlab/cuda/r/tidyverse:4
+  - display_name: B-Data R verse
+    kubespawner_override:
+      image_spec: glcr.b-data.ch/jupyterlab/cuda/r/verse:4
+  - display_name: B-Data R geospatial
+    kubespawner_override:
+      image_spec: glcr.b-data.ch/jupyterlab/cuda/r/geospatial:4
+  - display_name: B-Data R qgisprocess
+    kubespawner_override:
+      image_spec: glcr.b-data.ch/jupyterlab/cuda/r/qgisprocess:4
 
-# Required culling configuration (mandatory for NRP cluster policies)
-cull:
-  enabled: true
-  users: false
-  removeNamedServers: false
-  timeout: 3600      # 1 hour in seconds - Must be ≤ 21600 (6 hours)
-  every: 600         # Check every 10 minutes
-  concurrency: 10    # Number of parallel culling operations
-  maxAge: 0          # No maximum age limit
-
-
+scheduling:
+  userScheduler:
+    enabled: false
+  userPlaceholder:
+    enabled: false
+# prePuller relates to the hook|continuous-image-puller DaemonsSets
 prePuller:
   hook:
     enabled: false
   continuous:
     enabled: false
 
+# This will be deprecated soon, httpRoute sufficies, can set enabled: false
+ingress:
+  enabled: true
+  ingressClassName: haproxy
+  hosts: ["your_name.nrp-nautilus.io"]
+  pathSuffix: ''
+  tls:
+    - hosts:
+      - your_name.nrp-nautilus.io
 
+httpRoute:
+  enabled: true
+  hostnames:
+    - your_name.nrp-nautilus.io
+  gateway:
+    name: ingress
+    namespace: haproxy
+
+cull:
+  enabled: true
+  users: false
+  removeNamedServers: false
+  timeout: 3600
+  every: 600
+  concurrency: 10
+  maxAge: 0
 ```
 
 ### Generate Secret Token
