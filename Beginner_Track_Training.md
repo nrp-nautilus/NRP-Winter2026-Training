@@ -166,14 +166,6 @@ kubectl version --client
 ```
 
 
-      Cell In[1], line 2
-        kubectl version --client
-                ^
-    SyntaxError: invalid syntax
-
-
-
-
 ```python
 # Check current context and namespace
 kubectl config current-context
