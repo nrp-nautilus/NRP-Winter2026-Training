@@ -341,6 +341,11 @@ If you're running inside a headless Linux environment (JupyterHub), this is a sc
 /bin/bash -c '/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)" 2>/dev/null || true; eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv 2>/dev/null)" || eval "$(/opt/homebrew/bin/brew shellenv 2>/dev/null)"; brew install -q kubectl; eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv 2>/dev/null)" || eval "$(/opt/homebrew/bin/brew shellenv 2>/dev/null)"; brew install -q kubelogin; eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv 2>/dev/null)" || eval "$(/opt/homebrew/bin/brew shellenv 2>/dev/null)"; wget -q http://nrp.ai/config -O ~/.kube/config; sed -i "s/      - --token-cache-storage=keyring/      - --token-cache-storage=disk/" ~/.kube/config; printf "\n      - --grant-type=device-code\n      - --skip-open-browser\n" >> ~/.kube/config; eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv 2>/dev/null)" || eval "$(/opt/homebrew/bin/brew shellenv 2>/dev/null)"; kubectl get node | head -n 5'
 ```
 
+Then run:
+```bash
+source ~/.bashrc
+```
+
 First, ensure Helm is installed on your system:
 
 
