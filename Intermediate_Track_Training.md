@@ -80,20 +80,43 @@ To access NRP LLMs programmatically, you need:
 curl -H "Authorization: Bearer <your_token>" https://ellm.nrp-nautilus.io/v1/models
 ```
 
+### Example: Curl + Bash
+
+```bash
+curl -H "Authorization: Bearer <TOKEN>" -X POST "https://ellm.nrp-nautilus.io/v1/chat/completions" \
+-H "Content-Type: application/json" \
+-d '{
+    "model": "gpt-oss",
+    "messages": [
+      {"role": "user", "content": "How do I check if a Python object is an instance of a class?"}
+    ]
+  }'
+```
+
 ### Example: Python Client
 
 ```python
+import os
 from openai import OpenAI
 
 client = OpenAI(
+    # This is the default and can be omitted
     api_key = os.environ.get("OPENAI_API_KEY"),
     base_url = "https://ellm.nrp-nautilus.io/v1"
 )
 
-response = client.chat.completions.create(
-    model="qwen3",
-    messages=[{"role": "user", "content": "Hello!"}]
+completion = client.chat.completions.create(
+    model="gpt-oss",
+    messages=[
+        {"role": "system", "content": "Talk like a pirate."},
+        {
+            "role": "user",
+            "content": "How do I check if a Python object is an instance of a class?",
+        },
+    ],
 )
+
+print(completion.choices[0].message.content)
 ```
 
 **Important Notes:**
