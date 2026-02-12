@@ -150,33 +150,46 @@ kubectl oidc-login --version
 
 1. **Download the config file** from [https://nrp.ai/documentation/userdocs/start/getting-started/](https://nrp.ai/documentation/userdocs/start/getting-started/) (look for "Download Config File" button)
 
-2. **Create the `.kube` directory** (if it doesn't exist):
+2. **Create the `.kube` directory** (if it doesn't exist)
+
+```bash
+mkdir -p ~/.kube
+```
+
+3. Modify the config file:
 
 
-## Hands-On: Verify Your Access
+Switch:
 
-Let's verify that you have proper access to the cluster. Copy and paste these commands into your terminal:
+```bash
+--token-cache-storage=keyring
+```
 
+to:
 
-
-```python
-# Check kubectl version
-kubectl version --client
-
+```bash
+--token-cache-storage=disk
 ```
 
 
-```python
-# Check current context and namespace
-kubectl config current-context
+and add:
 
+```bash
+--grant-type=device-code
+--skip-open-browser
 ```
 
+The args should look like this:
 
-```python
-# Test cluster access - list nodes
-kubectl get nodes
-
+```bash
+      args:
+      - oidc-login
+      - get-token
+      - --token-cache-storage=disk
+      - --oidc-issuer-url=https://authentik.nrp-nautilus.io/application/o/k8s/
+      - --oidc-client-id=xrxBIaWxeRmGJUwSvaLjUzMEFZzQu2b4nk9I0B2W
+      - --listen-address=0.0.0.0:8000
+      - --oidc-extra-scope=profile,offline_access
 ```
 
 # Part 2: The Portal - GUI Access to Resources
