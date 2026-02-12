@@ -492,6 +492,14 @@ cull:
   concurrency: 10    # Number of parallel culling operations
   maxAge: 0          # No maximum age limit
 
+
+prePuller:
+  hook:
+    enabled: false
+  continuous:
+    enabled: false
+
+
 ```
 
 ### Generate Secret Token
